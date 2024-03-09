@@ -1,5 +1,18 @@
 def findAllSequence(n):
-    return []
+    def backtrack(start, path, sum_so_far):
+        if path:
+            answer.append(path.copy())
+        for i in range(start, n + 1):
+            if sum_so_far + i <= n:
+                path.append(i)
+                backtrack(i, path, sum_so_far + i)
+                path.pop()
+            else:
+                break
+
+    answer = []
+    backtrack(1, [], 0)
+    return answer
 
 if __name__ == "__main__":
     if findAllSequence(1) == [[1]]: print("pass")
