@@ -28,7 +28,7 @@ def kanpsackSW(maxSize, maxWeight, names, sizes, weights, values):
             for example, ['A', 'B'], [1, 2], [5, 4], [10, 7] indicates two items,
                 (i) 'A' with size 1, weight 5, and value 10
                 (ii) 'B' with size 2, weight 4, and value 7        
-    '''
+    ''' 
     assert len(names) == len(sizes) and len(sizes) == len(weights) and len(weights) == len(values), f"names({len(names)}, sizes({len(sizes)}, weights({len(weights)}), and values({len(values)}) must have equal lengths"
 
     numItems = len(names)
