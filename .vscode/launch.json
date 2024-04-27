@@ -1,0 +1,25 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C++ Launch", // 디버그 세션의 이름
+            "type": "cppdbg",    // 디버거의 타입
+            "request": "launch", // "launch"는 새로운 프로그램을 시작, "attach"는 이미 실행 중인 프로그램에 연결
+            "program": "C:/Users/82107/Documents/GitHub/algorithm/network/tcpserver.exe", // 실행 파일 경로
+            "args": [],         // 프로그램 실행 시 전달할 인자
+            "stopAtEntry": false, // 프로그램 시작 시 첫 줄에서 자동으로 일시 정지
+            "cwd": "${workspaceFolder}", // 현재 작업 디렉토리
+            "environment": [],  // 환경 변수 설정
+            "externalConsole": false, // 외부 콘솔 창 사용 여부
+            "MIMode": "gdb",    // 디버거 모드, gdb 또는 lldb
+            "setupCommands": [  // 디버거 시작 시 실행할 명령
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "build" // 실행 전에 실행할 태스크의 이름
+        }
+    ]
+}
