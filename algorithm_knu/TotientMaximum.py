@@ -1,6 +1,5 @@
 import math
 import timeit
-from pathlib import Path
 
 def gcd3(a, b):
     while b != 0:
@@ -54,14 +53,52 @@ def totientMaximum2(N):
             nMax = n
     return nOverPhiMax, nMax
 
+def prime(n):
+    is_prime = [True] * (n + 1)
+    is_prime[0] = is_prime[1] = False  
+    p = 2
+    while p * p <= n:
+        if is_prime[p]:  
+            for i in range(p * p, n + 1, p):
+                is_prime[i] = False
+        p += 1  
+    primes = [x for x in range(n + 1) if is_prime[x]]
+    return primes
+
+
 
 def totientMaximum3(*Ns):
-    return []    
-
+    maxnumber = max(Ns[0]); su = 1; i = 0; answer=[]
+    is_prime = prime(maxnumber)
+    while(su<maxnumber):
+        su*=is_prime[i]; i+=1
+        answer.append(su)
+    answer2=[]; j=0
+    for i in range(len(Ns[0])):
+        while True:
+            if Ns[0][i]>answer[j]:
+                j+=1
+            else:
+                j-=1; answer2.append(answer[j])
+                break
+    return answer2
 
 def totientMinimum(*Ns):    
-    return []
-
+    maxnumber = max(Ns); answer=[]
+    is_prime = prime(maxnumber); j=0
+    for i in range(len(Ns)):
+        while True:
+            try:
+                if Ns[i]> is_prime[j]:
+                    j+=1
+                else:
+                    j-=1; answer.append(is_prime[j])
+                    break
+            except:
+                j-=1; answer.append(is_prime[j])
+                break
+    return answer
+totientMinimum(50, 500, 1000)
 
 def readFileIntoIntegerList(fileName):
     '''
@@ -79,18 +116,7 @@ def readFileIntoIntegerList(fileName):
 
 
 if __name__ == "__main__":
-    # Test for in-class problems
-    functions = [totientMaximum1]
-    for f in functions:
-        for i in range(2, 12):
-            print(i, f(i), end=' ')
-        print()
 
-        n, repeat = 100, 10
-        tTotientMaximum = timeit.timeit(lambda: f(n), number=repeat)/repeat    
-        print(f"{f.__name__}({n}) took {tTotientMaximum} seconds on average")
-
-    '''# Test for after-class problems
     print()
     print("Correctness test for totientMaximum3()")
     print("For each test case, if your answer does not appear within 5 seconds, then consider that you failed the case")
@@ -158,4 +184,4 @@ if __name__ == "__main__":
         print("F ", end='')
         correct = False
 
-    print(timeit.timeit(lambda: totientMinimum(*inputLines), number=1))'''
+    print(timeit.timeit(lambda: totientMinimum(*inputLines), number=1))
