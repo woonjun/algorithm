@@ -114,9 +114,46 @@ class Board:
                         if ag1.intersectWith(ag2): 
                             self.shade[y1][x1] = 1
                             break
+    
+    def createShade3(self):
+        n = len(self.board) 
+        max_distance = max(self.xPlayer, n - 1 - self.xPlayer, self.yPlayer, n - 1 - self.yPlayer) 
+        self.shade = [[0] * n for _ in range(n)] 
+        Lobstacle = [] 
 
-    def createShade3(self):        
-        pass
+        def checkCell(x, y):
+            if x < 0 or x >= n or y < 0 or y >= n:
+                return  
+            cell_range = self.angleRangeToCell(x, y)
+            for obstacle_range in Lobstacle:
+                if cell_range.intersectWith(obstacle_range):
+                    self.shade[y][x] = 1  
+                    break
+            if self.board[y][x] == 1:
+                update = 0
+                for obstacle_range in Lobstacle:
+                    if obstacle_range.intersectWith(cell_range):
+                        obstacle_range.mergeWith(cell_range)
+                        update = 1
+                        break
+                if update == 0:
+                    Lobstacle.append(cell_range)  
+        for distance in range(1, max_distance + 1):
+            i = 0
+            while i < distance:
+                checkCell(self.xPlayer - i, self.yPlayer + distance) # up
+                checkCell(self.xPlayer + distance, self.yPlayer + i) # right
+                checkCell(self.xPlayer + i, self.yPlayer - distance) # down
+                checkCell(self.xPlayer - distance, self.yPlayer - i) # left
+                i+=1
+                checkCell(self.xPlayer + i, self.yPlayer + distance) # up
+                checkCell(self.xPlayer + distance, self.yPlayer - i) # right
+                checkCell(self.xPlayer - i, self.yPlayer - distance) # down
+                checkCell(self.xPlayer - distance, self.yPlayer + i) # left
+
+        return self.shade
+
+
 
     def shadeToString(self):
         result = []
@@ -237,13 +274,14 @@ if __name__ == "__main__":
     print(f"createShade() with N = {len(board.board)} took {tCreateShade} seconds on average")
    
 
-    '''# Test for after-class problems
+    # Test for after-class problems
     print()
     print("Correctness test for createShade3()")
     correct = True
     
     b = Board("map1.txt")
     b.createShade3()
+    print(b.shade)
     if b.shade == [[1,1,0,0,0], [1,0,0,0,0], [0,0,0,0,0], [0,0,0,0,1], [0,0,0,1,1]]: print("P ", end='')
     else: 
         print("F ", end='')
@@ -262,7 +300,7 @@ if __name__ == "__main__":
     else: 
         print("F ", end='')
         correct = False
-
+    
     for i in range(1,6):
         b = Board(i*5)
         b.createShade3()
@@ -280,7 +318,6 @@ if __name__ == "__main__":
             print(b.shade)
             print()
             correct = False
-    
     print()
     print()
     print("Speed test for createShade3()")    
@@ -302,5 +339,6 @@ if __name__ == "__main__":
         print(f"Average running times of the submitted code {tSubmittedCode:.10f} and createShade2 {tSpeedCompare2:.10f}")
         if tSubmittedCode * 20 < tSpeedCompare2: print("pass")
         else: print("fail")
-        print()'''
+        print()
         
+    
